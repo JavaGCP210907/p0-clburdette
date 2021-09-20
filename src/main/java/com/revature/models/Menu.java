@@ -17,7 +17,9 @@ public class Menu {
 	private OwnerDao oDao;
 	private ParkDao pDao;
 	private AddMenu addMenu;
-	private FindMenu findMenu;
+	private FindParksMenu findParksMenu;
+	private FindOwnersMenu findOwnersMenu;
+	private FindDogsMenu findDogsMenu;
 	private boolean running = true;
 	private enum State{
 		MAIN,FIND_PARKS,FIND_OWNERS,FIND_DOGS,ADD_PARK,ADD_OWNER,ADD_DOG,EXIT
@@ -27,11 +29,10 @@ public class Menu {
 	public Menu() {
 		this.log = LogManager.getLogger(Menu.class);
 		this.scan = new Scanner(System.in);
-		this.dDao = new DogDao();
-		this.oDao = new OwnerDao();
-		this.pDao = new ParkDao();
 		this.addMenu =  new AddMenu();
-		this.findMenu = new FindMenu();
+		this.findParksMenu = new FindParksMenu();
+		this.findOwnersMenu = new FindOwnersMenu();
+		this.findDogsMenu = new FindDogsMenu();
 		this.state = State.MAIN;
 		
 	}
@@ -55,12 +56,16 @@ public class Menu {
 				handleInputMain(scan.nextInt());
 				break;
 			case FIND_PARKS:
-				this.findMenu.findParksLoop();
+				this.findParksMenu.loop();
 				this.state = State.MAIN;
 				break;
 			case FIND_OWNERS:
+				this.findOwnersMenu.loop();
+				this.state = State.MAIN;
 				break;
 			case FIND_DOGS:
+				this.findDogsMenu.loop();
+				this.state = State.MAIN;
 				break;
 			case ADD_PARK:
 				break;

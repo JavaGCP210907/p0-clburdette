@@ -5,15 +5,15 @@ import java.util.Scanner;
 
 import com.revature.daos.ParkDao;
 
-public class FindMenu {
+public class FindParksMenu implements FindMenuInterface{
 
 	private boolean running = true;
 	private enum State{
-		CITY, ZIPCODE, AMENITIES, ALL, MAIN, EXIT
+		CITY, ZIPCODE, AMENITIES, ALL, MENU, EXIT
 	}
-	State state = State.MAIN;
-	
-	public void findParksMenu() {
+	State state = State.MENU;
+	@Override
+	public void menu() {
 		System.out.println("----------------------------------------------------------------");
 		System.out.println("---------------------- search parks by... ----------------------");
 		System.out.println("----------------------------------------------------------------");
@@ -28,8 +28,8 @@ public class FindMenu {
 		System.out.println("|==============================================================|");
 		System.out.println("");
 	}
-
-	public void findParksState(int option) {
+	@Override
+	public void setState(int option) {
 		
 		switch(option) {
 		case 1:
@@ -49,11 +49,12 @@ public class FindMenu {
 			break;
 		default:
 			System.out.println("Input error. Repeating park search choices.");
-			this.state = State.MAIN;
+			this.state = State.MENU;
 			break;
 		}
 	}
-	public void findParksLoop() {
+	@Override
+	public void loop() {
 		
 		ParkDao pDao = new ParkDao();
 		Scanner scan = new Scanner(System.in);
@@ -76,61 +77,38 @@ public class FindMenu {
 				state = handleParksMenuReturn(scan);
 				break;
 			case AMENITIES:
-				final int NUM_AMENITIES = 4;
-				boolean[] desiredAmenities = {false, false, false, false};
 				System.out.println("Please respond 'y' or 'n' to search for the following amenities:");
 				System.out.println("");
-				for (int i = 0; i < NUM_AMENITIES; i++) {
-					String question = "";
-					switch(i) {
-					case 0:
-						question = "Lots of shade";
-						break;
-					case 1:
-						question = "Dedicated bark park";
-						break;
-					case 2:
-						question = "Open areas for play";
-						break;
-					case 3:
-						question = "Trails for walking/running";
-						break;
-					}
-					String questionSuffix = "? (y/n)";
-					System.out.println(question + questionSuffix);
-					String answer = scan.nextLine();
-					if(answer == "y") {
-						desiredAmenities[i] = true;
-					}else if(answer == "n") {
-						desiredAmenities[i] = false;
-					}else{
-						System.out.println("Incorrect input.  Please respond again with 'y' or 'n'.");
-						i--;
-						break;
-					}
-					
-				}
+				boolean[] desiredAmenities = getParkAmenities(scan);
+				List<Park> parksAmenitiesSearchResult = pDao.getParksByAmenities(desiredAmenities);
+				printParkList(parksAmenitiesSearchResult);
+				state = handleParksMenuReturn(scan);
 				break;
 			case ALL:
 				List<Park> parksSearchResult = pDao.getParks();
 				printParkList(parksSearchResult);
 				state = handleParksMenuReturn(scan);
 				break;
-			case MAIN:
-				findParksMenu();
-				findParksState(scan.nextInt());
+			case MENU:
+				menu();
+				setState(scan.nextInt());
 				break;
 			case EXIT:
+				running = false;
 				break;
 			default:
 				System.out.println("Internal error. Returning to main menu.");
+				running = false;
 				break;
 			}
 		}
 	}
 	
 	public void printParkList(List<Park> parks) {
-		
+		System.out.println("");
+		for(Park park: parks) {
+			System.out.println(park);
+		}
 	}
 	
 	public State handleParksMenuReturn(Scanner s) {
@@ -139,7 +117,7 @@ public class FindMenu {
 		int response = s.nextInt();
 		switch(response) {
 		case 1:
-			parkMenuState = State.MAIN;
+			parkMenuState = State.MENU;
 			break;
 		case 2:
 			parkMenuState = State.EXIT;
@@ -152,14 +130,39 @@ public class FindMenu {
 		return parkMenuState;
 		
 	}
-	public void findOwners() {
-		
+	
+	public boolean[] getParkAmenities(Scanner s) {
+		final int NUM_AMENITIES = 4;
+		boolean[] desiredAmenities = {false, false, false, false};
+		for (int i = 0; i < NUM_AMENITIES; i++) {
+			String question = "";
+			switch(i) {
+			case 0:
+				question = "Lots of shade";
+				break;
+			case 1:
+				question = "Dedicated bark park";
+				break;
+			case 2:
+				question = "Open areas for play";
+				break;
+			case 3:
+				question = "Trails for walking/running";
+				break;
+			}
+			String questionSuffix = "? (y/n)";
+			System.out.println(question + questionSuffix);
+			String answer = s.nextLine();
+			if(answer == "y") {
+				desiredAmenities[i] = true;
+			}else if(answer == "n") {
+				desiredAmenities[i] = false;
+			}else{
+				System.out.println("Incorrect input.  Please respond again with 'y' or 'n'.");
+				i--;
+				continue;
+			}	
+		}
+		return desiredAmenities;
 	}
-	public void findDogs() {
-		
-	}
-	/*
-	public void refineParks() {
-		
-	}*/
 }
