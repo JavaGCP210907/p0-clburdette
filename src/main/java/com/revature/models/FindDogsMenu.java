@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.revature.daos.DogDao;
-import com.revature.daos.ParkDao;
 
 public class FindDogsMenu implements FindMenuInterface{
 	private boolean running = true;
@@ -72,11 +71,11 @@ public class FindDogsMenu implements FindMenuInterface{
 				String nameToSearchBy = scan.nextLine();
 				List<Dog> dogsNameSearchResult = dDao.getDogsByName(nameToSearchBy);
 				printDogList(dogsNameSearchResult);
-				state = handleDogssMenuReturn(scan);
+				state = handleDogsMenuReturn(scan);
 				break;
 			case BREED:
 				System.out.println("Enter the zipcode you would like to search by:");
-				int breedToSearchBy = scan.nextInt();
+				String breedToSearchBy = scan.nextLine();
 				List<Dog> dogsBreedSearchResult = dDao.getDogsByBreed(breedToSearchBy);
 				printDogList(dogsBreedSearchResult);
 				state = handleDogsMenuReturn(scan);
@@ -99,7 +98,7 @@ public class FindDogsMenu implements FindMenuInterface{
 				break;
 			case ALL:
 				List<Dog> dogsSearchResult = dDao.getDogs();
-				printDogList(dogssSearchResult);
+				printDogList(dogsSearchResult);
 				state = handleDogsMenuReturn(scan);
 				break;
 			case MENU:
@@ -114,6 +113,32 @@ public class FindDogsMenu implements FindMenuInterface{
 				running = false;
 				break;
 			}
+		}
+	}
+	
+	public State handleDogsMenuReturn(Scanner s) {
+		State dogMenuState;
+		System.out.println("Press '1' to return to parks search. Press '2' to return to main menu.");
+		int response = s.nextInt();
+		switch(response) {
+		case 1:
+			dogMenuState = State.MENU;
+			break;
+		case 2:
+			dogMenuState = State.EXIT;
+			break;
+		default:
+			dogMenuState = State.EXIT;
+			System.out.println("Input error. Returning to main menu.");
+			break;	
+		}
+		return dogMenuState;
+	}
+	
+	public void printDogList(List<Dog> dogs) {
+		System.out.println("");
+		for(Dog dog: dogs) {
+			System.out.println(dog);
 		}
 	}
 

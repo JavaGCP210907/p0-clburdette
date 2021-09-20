@@ -13,10 +13,7 @@ public class Menu {
 	
 	private Logger log;
 	private Scanner scan;
-	private DogDao dDao;
-	private OwnerDao oDao;
-	private ParkDao pDao;
-	private AddMenu addMenu;
+	private PromptsForAddingObjects promptsThat;
 	private FindParksMenu findParksMenu;
 	private FindOwnersMenu findOwnersMenu;
 	private FindDogsMenu findDogsMenu;
@@ -29,16 +26,14 @@ public class Menu {
 	public Menu() {
 		this.log = LogManager.getLogger(Menu.class);
 		this.scan = new Scanner(System.in);
-		this.addMenu =  new AddMenu();
+		this.promptsThat =  new PromptsForAddingObjects();
 		this.findParksMenu = new FindParksMenu();
 		this.findOwnersMenu = new FindOwnersMenu();
 		this.findDogsMenu = new FindDogsMenu();
 		this.state = State.MAIN;
-		
+		log.info("main menu initiated");
 	}
-	public void menuInit() {
 
-	}
 	public void menuIntro() {
 		System.out.println("================================================================");
 		System.out.println("=------------------- Welcome to BarkPark ----------------------=");
@@ -68,17 +63,32 @@ public class Menu {
 				this.state = State.MAIN;
 				break;
 			case ADD_PARK:
+				Park parkToAdd = this.promptsThat.getParkToAdd();
+				ParkDao pDao = new ParkDao();
+				pDao.addPark(parkToAdd);
+				this.state = State.MAIN;
 				break;
 			case ADD_OWNER:
+				Owner ownerToAdd = this.promptsThat.getOwnerToAdd();
+				OwnerDao oDao = new OwnerDao();
+				oDao.addOwner(ownerToAdd);
+				this.state = State.MAIN;
 				break;
 			case ADD_DOG:
+				Dog dogToAdd = this.promptsThat.getDogToAdd();
+				DogDao dDao = new DogDao();
+				dDao.addDog(dogToAdd);
+				this.state = State.MAIN;
 				break;
 			case EXIT:
+				scan.close();
 				menuOutro();
 				this.running = false;
+				log.info("main menu successfully closed");
 				break;
 			default:
 				System.out.println("There has been an input error.  Returning the main menu");
+				this.state = State.MAIN;
 				break;	
 			}
 		}
