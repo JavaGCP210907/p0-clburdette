@@ -3,10 +3,10 @@ package com.revature.models;
 public class Park {
 
 	int park_id;
-	int streetAddress;
+	String parkName;
 	String streetName;
 	String city;
-	int zipcode;
+	String zipcode;
 	boolean shady;
 	boolean barkPark;
 	boolean playFields;
@@ -16,10 +16,10 @@ public class Park {
 		super();
 	}
 
-	public Park(int streetAddress, String streetName, String city, int zipcode, boolean shady, boolean barkPark,
+	public Park(String parkName, String streetName, String city, String zipcode, boolean shady, boolean barkPark,
 			boolean playFields, boolean walkingTrails) {
 		super();
-		this.streetAddress = streetAddress;
+		this.parkName = parkName;
 		this.streetName = streetName;
 		this.city = city;
 		this.zipcode = zipcode;
@@ -29,11 +29,11 @@ public class Park {
 		this.walkingTrails = walkingTrails;
 	}
 
-	public Park(int park_id, int streetAddress, String streetName, String city, int zipcode, boolean shady,
+	public Park(int park_id, String parkName, String streetName, String city, String zipcode, boolean shady,
 			boolean barkPark, boolean playFields, boolean walkingTrails) {
 		super();
 		this.park_id = park_id;
-		this.streetAddress = streetAddress;
+		this.parkName = parkName;
 		this.streetName = streetName;
 		this.city = city;
 		this.zipcode = zipcode;
@@ -51,12 +51,12 @@ public class Park {
 		this.park_id = park_id;
 	}
 
-	public int getStreetAddress() {
-		return streetAddress;
+	public String getParkName() {
+		return parkName;
 	}
 
-	public void setStreetAddress(int streetAddress) {
-		this.streetAddress = streetAddress;
+	public void setParkName(String parkName) {
+		this.parkName = parkName;
 	}
 
 	public String getStreetName() {
@@ -75,11 +75,11 @@ public class Park {
 		this.city = city;
 	}
 
-	public int getZipcode() {
+	public String getZipcode() {
 		return zipcode;
 	}
 
-	public void setZipcode(int zipcode) {
+	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
 
@@ -124,10 +124,10 @@ public class Park {
 		result = prime * result + park_id;
 		result = prime * result + (playFields ? 1231 : 1237);
 		result = prime * result + (shady ? 1231 : 1237);
-		result = prime * result + streetAddress;
+		result = prime * result + ((parkName == null) ? 0 : parkName.hashCode());
 		result = prime * result + ((streetName == null) ? 0 : streetName.hashCode());
 		result = prime * result + (walkingTrails ? 1231 : 1237);
-		result = prime * result + zipcode;
+		result = prime * result + ((zipcode == null) ? 0 : zipcode.hashCode());
 		return result;
 	}
 
@@ -153,7 +153,10 @@ public class Park {
 			return false;
 		if (shady != other.shady)
 			return false;
-		if (streetAddress != other.streetAddress)
+		if (parkName == null) {
+			if (other.parkName != null)
+				return false;
+		} else if (!parkName.equals(other.parkName))
 			return false;
 		if (streetName == null) {
 			if (other.streetName != null)
@@ -162,14 +165,17 @@ public class Park {
 			return false;
 		if (walkingTrails != other.walkingTrails)
 			return false;
-		if (zipcode != other.zipcode)
+		if (zipcode == null) {
+			if (other.zipcode != null)
+				return false;
+		} else if (!zipcode.equals(other.zipcode))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Park [park_id=" + park_id + ", streetAddress=" + streetAddress + ", streetName=" + streetName
+		return "Park [park_id=" + park_id + ", parkName=" + parkName + ", streetName=" + streetName
 				+ ", city=" + city + ", zipcode=" + zipcode + ", shady=" + shady + ", barkPark=" + barkPark
 				+ ", playFields=" + playFields + ", walkingTrails=" + walkingTrails + "]";
 	}

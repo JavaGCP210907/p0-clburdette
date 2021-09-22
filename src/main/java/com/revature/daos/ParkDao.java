@@ -34,6 +34,26 @@ public class ParkDao implements ParkDaoInterface{
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Park> getParksByName(String name){
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			ResultSet rs = null;
+			String sql = "SELECT * FROM parks WHERE parkName = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+			
+			return parkResultSetToParkList(rs);
+			
+		}catch(SQLException e) {
+			Logger log = LogManager.getLogger(ParkDao.class);
+			log.info("get parks db access failed");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public List<Park> getParksByCity(String city) {
@@ -56,13 +76,13 @@ public class ParkDao implements ParkDaoInterface{
 	}
 
 	@Override
-	public List<Park> getParksByZip(int zipcode) {
+	public List<Park> getParksByZip(String zipcode) {
 		try(Connection conn = ConnectionUtil.getConnection()){
 			
 			ResultSet rs = null;
 			String sql = "SELECT * FROM parks WHERE zipcode = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, zipcode);
+			ps.setString(1, zipcode);
 			rs = ps.executeQuery();
 			
 			return parkResultSetToParkList(rs);
@@ -79,49 +99,58 @@ public class ParkDao implements ParkDaoInterface{
 	public List<Park> getParksByAmenities(boolean[] choices) {
 		try(Connection conn = ConnectionUtil.getConnection()){
 
-			ResultSet rs = null;
-			String sql = "SELECT * FROM parks WHERE ";
-			for(int i = 0; i < choices.length; i++) {
-				switch(i) {
-				case 0:
-					if(choices[i]) {
-						sql += "shady = ?";
+			int yeses = 0;
+			for(int i = 0; i < choices.length; i++)
+			{
+				if(choices[i]) {yeses++;}
+			}
+			if(yeses == 0) {
+				System.out.println("No amenities chosen. Showing all parks.");
+				return getParks();
+			}else{
+				ResultSet rs = null;
+				String sql = "SELECT * FROM parks WHERE ";
+				for(int i = 0; i < choices.length; i++) {
+					switch(i) {
+					case 0:
+						if(choices[i]) {
+							sql += "shady = ?";
+						}
+						break;
+					case 1:
+						if(choices[i] && !choices[i -1]) {
+							sql += "barkPark = ?";
+						}else if(choices[i]) {
+							sql += " AND barkPark = ?";
+						}
+						break;
+					case 2:
+						if(choices[i] && !choices[i - 1] && !choices[i - 2]) {
+							sql += "playFields = ?";
+						}else if(choices[i]) {
+							sql += " AND playFields = ?";
+						}
+						break;
+					case 3:
+						if(choices[i] && !choices[i - 1] && !choices[i - 2] && !choices[i - 3]) {
+							sql += "walkingTrails = ?";
+						}else if(choices[i]) {
+							sql += " AND walkingTrails = ?";
+						}
+						break;
+					default:
+						break;
 					}
-					break;
-				case 1:
-					if(choices[i] && !choices[i -1]) {
-						sql += "barkPark = ?";
-					}else if(choices[i]) {
-						sql += " AND barkPark = ?";
-					}
-					break;
-				case 2:
-					if(choices[i] && !choices[i - 1] && !choices[i - 2]) {
-						sql += "playFields = ?";
-					}else if(choices[i]) {
-						sql += " AND playFields = ?";
-					}
-					break;
-				case 3:
-					if(choices[i] && !choices[i - 1] && !choices[i - 2] && !choices[i - 3]) {
-						sql += "walkingTrails = ?";
-					}else if(choices[i]) {
-						sql += " AND walkingTrails = ?";
-					}
-					break;
-				default:
-					break;
 				}
-			}
 			
-			PreparedStatement ps = conn.prepareStatement(sql);
-			for(int i = 0; i < choices.length; i++) {
-				ps.setBoolean(i+1, choices[i]);
-			}
-			rs = ps.executeQuery();
+				PreparedStatement ps = conn.prepareStatement(sql);
+				for(int i = 0; i < yeses; i++) {
+					ps.setBoolean(i+1, true);
+				}
+				rs = ps.executeQuery();
 			
-			return parkResultSetToParkList(rs);
-			
+				return parkResultSetToParkList(rs);
+			}	
 		}catch(SQLException e) {
 			Logger log = LogManager.getLogger(ParkDao.class);
 			log.info("get park db access failed");
@@ -132,8 +161,31 @@ public class ParkDao implements ParkDaoInterface{
 
 	@Override
 	public void addPark(Park park) {
-		// TODO Auto-generated method stub
 		
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			String sql = "INSERT INTO parks (parkName, streetName, city, zipcode, shady, barkPark, playFields, walkingTrails)" +
+					 "VALUES (?,?,?,?,?,?,?,?)";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, park.getParkName());
+			ps.setString(2, park.getStreetName());
+			ps.setString(3, park.getCity());
+			ps.setString(4, park.getZipcode());
+			ps.setBoolean(5, park.isShady());
+			ps.setBoolean(6, park.isBarkPark());
+			ps.setBoolean(7, park.isPlayFields());
+			ps.setBoolean(8, park.isWalkingTrails());
+			ps.executeUpdate();
+			
+			System.out.println("New park:");
+			System.out.println(park);
+			System.out.println("added to Parks database");
+			
+		}catch(SQLException e) {
+			System.out.println("Add park failed. Returning to main menu.");
+			e.printStackTrace();
+		}
 	}
 	
 	public List<Park> parkResultSetToParkList(ResultSet rs){
@@ -142,10 +194,10 @@ public class ParkDao implements ParkDaoInterface{
 			while(rs.next()) {
 				Park p = new Park(
 					rs.getInt("park_id"),
-					rs.getInt("streetAddress"),
+					rs.getString("parkName"),
 					rs.getString("streetName"),
 					rs.getString("city"),
-					rs.getInt("zipcode"),
+					rs.getString("zipcode"),
 					rs.getBoolean("shady"),
 					rs.getBoolean("barkPark"),
 					rs.getBoolean("playFields"),

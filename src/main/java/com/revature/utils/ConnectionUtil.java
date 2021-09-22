@@ -17,6 +17,6 @@ public class ConnectionUtil {
 	String password = System.getenv("PASSWORD");
 	
 		
-	return DriverManager.getConnection(url, userName, password);
+	return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=barkpark", "postgres", "password2remember");
 	}
 }

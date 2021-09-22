@@ -4,14 +4,14 @@ public class Owner {
 	int owner_id;
 	String f_name;
 	String l_name;
-	int zipcode;
+	String zipcode;
 	int homepark_fk;
 	
 	public Owner() {
 		super();
 	}
 
-	public Owner(String f_name, String l_name, int zipcode, int homepark_fk) {
+	public Owner(String f_name, String l_name, String zipcode, int homepark_fk) {
 		super();
 		this.f_name = f_name;
 		this.l_name = l_name;
@@ -19,7 +19,7 @@ public class Owner {
 		this.homepark_fk = homepark_fk;
 	}
 
-	public Owner(int owner_id, String f_name, String l_name, int zipcode, int homepark_fk) {
+	public Owner(int owner_id, String f_name, String l_name, String zipcode, int homepark_fk) {
 		super();
 		this.owner_id = owner_id;
 		this.f_name = f_name;
@@ -52,11 +52,11 @@ public class Owner {
 		this.l_name = l_name;
 	}
 
-	public int getZipcode() {
+	public String getZipcode() {
 		return zipcode;
 	}
 
-	public void setZipcode(int zipcode) {
+	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
 
@@ -82,7 +82,7 @@ public class Owner {
 		result = prime * result + homepark_fk;
 		result = prime * result + ((l_name == null) ? 0 : l_name.hashCode());
 		result = prime * result + owner_id;
-		result = prime * result + zipcode;
+		result = prime * result + ((zipcode == null) ? 0 : zipcode.hashCode());
 		return result;
 	}
 
@@ -109,7 +109,10 @@ public class Owner {
 			return false;
 		if (owner_id != other.owner_id)
 			return false;
-		if (zipcode != other.zipcode)
+		if (zipcode == null) {
+			if (other.zipcode != null)
+				return false;
+		} else if (!zipcode.equals(other.zipcode))
 			return false;
 		return true;
 	}

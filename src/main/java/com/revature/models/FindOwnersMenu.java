@@ -56,15 +56,15 @@ public class FindOwnersMenu implements FindMenuInterface{
 	}
 
 	@Override
-	public void loop() {
+	public void loop(Scanner scan) {
 		
 		OwnerDao oDao = new OwnerDao();
-		Scanner scan = new Scanner(System.in);
 		
 		while(this.running) {
 
 			switch(this.state) {
 			case NAME:
+				scan.nextLine();
 				System.out.println("Enter the first name of the owner to search for:(leave blank if unknown)");
 				String firstName = scan.nextLine();
 				System.out.println("Enter the last name of the owner to search for:(leave blank if unknown)");
@@ -74,13 +74,15 @@ public class FindOwnersMenu implements FindMenuInterface{
 				state = handleOwnersMenuReturn(scan);
 				break;
 			case ZIPCODE:
+				scan.nextLine();
 				System.out.println("Enter the zipcode you would like to search by:");
-				int zipcodeToSearchBy = scan.nextInt();
+				String zipcodeToSearchBy = scan.nextLine();
 				List<Owner> ownersZipSearchResult = oDao.getOwnersByZip(zipcodeToSearchBy);
 				printOwnerList(ownersZipSearchResult);
 				state = handleOwnersMenuReturn(scan);
 				break;
 			case HOMEPARK:
+				scan.nextLine();
 				System.out.println("Enter a park id to see owners associated with it:");
 				int homeParkToSearchBy = scan.nextInt();
 				List<Owner> ownersParkSearchResult = oDao.getOwnersByHomePark(homeParkToSearchBy);
@@ -88,6 +90,7 @@ public class FindOwnersMenu implements FindMenuInterface{
 				state = handleOwnersMenuReturn(scan);
 				break;
 			case ALL:
+				scan.nextLine();
 				List<Owner> parksSearchResult = oDao.getOwners();
 				printOwnerList(parksSearchResult);
 				state = handleOwnersMenuReturn(scan);
@@ -105,6 +108,8 @@ public class FindOwnersMenu implements FindMenuInterface{
 				break;
 			}
 		}
+		state = State.MENU;
+		running = true;
 	}
 	
 	public void printOwnerList(List<Owner> owners) {
@@ -116,7 +121,7 @@ public class FindOwnersMenu implements FindMenuInterface{
 	
 	public State handleOwnersMenuReturn(Scanner s) {
 		State ownerMenuState;
-		System.out.println("Press '1' to return to parks search. Press '2' to return to main menu.");
+		System.out.println("Press '1' to return to owners search. Press '2' to return to main menu.");
 		int response = s.nextInt();
 		switch(response) {
 		case 1:

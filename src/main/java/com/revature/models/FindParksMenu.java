@@ -9,7 +9,7 @@ public class FindParksMenu implements FindMenuInterface{
 
 	private boolean running = true;
 	private enum State{
-		CITY, ZIPCODE, AMENITIES, ALL, MENU, EXIT
+		NAME, CITY, ZIPCODE, AMENITIES, ALL, MENU, EXIT
 	}
 	State state = State.MENU;
 	@Override
@@ -20,11 +20,12 @@ public class FindParksMenu implements FindMenuInterface{
 		System.out.println("");
 		System.out.println("|  (option)                                          (command) |");
 		System.out.println("|==============================================================|");
-		System.out.println("| City ------------------------------------------------  1  ---|");
-		System.out.println("| Zipcode ---------------------------------------------  2  ---|");
-		System.out.println("| Amenities -------------------------------------------  3  ---|");
-		System.out.println("| See all parks ---------------------------------------  4  ---|");
-		System.out.println("| Return to main menu ---------------------------------  5  ---|");
+		System.out.println("| Name ------------------------------------------------  1  ---|");
+		System.out.println("| City ------------------------------------------------  2  ---|");
+		System.out.println("| Zipcode ---------------------------------------------  3  ---|");
+		System.out.println("| Amenities -------------------------------------------  4  ---|");
+		System.out.println("| See all parks ---------------------------------------  5  ---|");
+		System.out.println("| Return to main menu ---------------------------------  6  ---|");
 		System.out.println("|==============================================================|");
 		System.out.println("");
 	}
@@ -33,18 +34,21 @@ public class FindParksMenu implements FindMenuInterface{
 		
 		switch(option) {
 		case 1:
-			this.state = State.CITY;
+			this.state = State.NAME;
 			break;
 		case 2:
-			this.state = State.ZIPCODE;
+			this.state = State.CITY;
 			break;
 		case 3:
-			this.state = State.AMENITIES;
+			this.state = State.ZIPCODE;
 			break;
 		case 4:
-			this.state = State.ALL;
+			this.state = State.AMENITIES;
 			break;
 		case 5:
+			this.state = State.ALL;
+			break;
+		case 6:
 			this.state = State.EXIT;
 			break;
 		default:
@@ -54,15 +58,23 @@ public class FindParksMenu implements FindMenuInterface{
 		}
 	}
 	@Override
-	public void loop() {
+	public void loop(Scanner scan) {
 		
 		ParkDao pDao = new ParkDao();
-		Scanner scan = new Scanner(System.in);
 		
 		while(this.running) {
 
 			switch(this.state) {
+			case NAME:
+				scan.nextLine();
+				System.out.println("Enter the name of the park you would like to search for:");
+				String parkToSearchFor = scan.nextLine();
+				List<Park> parkNameSearchResult = pDao.getParksByName(parkToSearchFor);
+				printParkList(parkNameSearchResult);
+				state = handleParksMenuReturn(scan);
+				break;
 			case CITY:
+				scan.nextLine();
 				System.out.println("Enter the name of the city you would like to search by:");
 				String cityToSearchBy = scan.nextLine();
 				List<Park> parksCitySearchResult = pDao.getParksByCity(cityToSearchBy);
@@ -70,13 +82,15 @@ public class FindParksMenu implements FindMenuInterface{
 				state = handleParksMenuReturn(scan);
 				break;
 			case ZIPCODE:
+				scan.nextLine();
 				System.out.println("Enter the zipcode you would like to search by:");
-				int zipcodeToSearchBy = scan.nextInt();
+				String zipcodeToSearchBy = scan.nextLine();
 				List<Park> parksZipSearchResult = pDao.getParksByZip(zipcodeToSearchBy);
 				printParkList(parksZipSearchResult);
 				state = handleParksMenuReturn(scan);
 				break;
 			case AMENITIES:
+				scan.nextLine();
 				System.out.println("Please respond 'y' or 'n' to search for the following amenities:");
 				System.out.println("");
 				boolean[] desiredAmenities = getParkAmenities(scan);
@@ -102,6 +116,8 @@ public class FindParksMenu implements FindMenuInterface{
 				break;
 			}
 		}
+		state = State.MENU;
+		running = true;
 	}
 	
 	public void printParkList(List<Park> parks) {
@@ -127,6 +143,7 @@ public class FindParksMenu implements FindMenuInterface{
 			System.out.println("Input error. Returning to main menu.");
 			break;	
 		}
+		s.nextLine();
 		return parkMenuState;
 		
 	}
@@ -152,10 +169,10 @@ public class FindParksMenu implements FindMenuInterface{
 			}
 			String questionSuffix = "? (y/n)";
 			System.out.println(question + questionSuffix);
-			String answer = s.nextLine();
-			if(answer == "y") {
+			char answer = s.next().charAt(0);
+			if(answer == 'y') {
 				desiredAmenities[i] = true;
-			}else if(answer == "n") {
+			}else if(answer == 'n') {
 				desiredAmenities[i] = false;
 			}else{
 				System.out.println("Incorrect input.  Please respond again with 'y' or 'n'.");

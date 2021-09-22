@@ -51,31 +51,31 @@ public class Menu {
 				handleInputMain(scan.nextInt());
 				break;
 			case FIND_PARKS:
-				this.findParksMenu.loop();
+				this.findParksMenu.loop(scan);
 				this.state = State.MAIN;
 				break;
 			case FIND_OWNERS:
-				this.findOwnersMenu.loop();
+				this.findOwnersMenu.loop(scan);
 				this.state = State.MAIN;
 				break;
 			case FIND_DOGS:
-				this.findDogsMenu.loop();
+				this.findDogsMenu.loop(scan);
 				this.state = State.MAIN;
 				break;
 			case ADD_PARK:
-				Park parkToAdd = this.promptsThat.getParkToAdd();
+				Park parkToAdd = this.promptsThat.getParkToAdd(scan);
 				ParkDao pDao = new ParkDao();
 				pDao.addPark(parkToAdd);
 				this.state = State.MAIN;
 				break;
 			case ADD_OWNER:
-				Owner ownerToAdd = this.promptsThat.getOwnerToAdd();
+				Owner ownerToAdd = this.promptsThat.getOwnerToAdd(scan);
 				OwnerDao oDao = new OwnerDao();
 				oDao.addOwner(ownerToAdd);
 				this.state = State.MAIN;
 				break;
 			case ADD_DOG:
-				Dog dogToAdd = this.promptsThat.getDogToAdd();
+				Dog dogToAdd = this.promptsThat.getDogToAdd(scan);
 				DogDao dDao = new DogDao();
 				dDao.addDog(dogToAdd);
 				this.state = State.MAIN;

@@ -59,14 +59,14 @@ public class FindDogsMenu implements FindMenuInterface{
 	}
 
 	@Override
-	public void loop() {
+	public void loop(Scanner scan) {
 		DogDao dDao = new DogDao();
-		Scanner scan = new Scanner(System.in);
 		
 		while(this.running) {
 
 			switch(this.state) {
 			case NAME:
+				scan.nextLine();
 				System.out.println("Enter the name of the city you would like to search by:");
 				String nameToSearchBy = scan.nextLine();
 				List<Dog> dogsNameSearchResult = dDao.getDogsByName(nameToSearchBy);
@@ -74,13 +74,15 @@ public class FindDogsMenu implements FindMenuInterface{
 				state = handleDogsMenuReturn(scan);
 				break;
 			case BREED:
-				System.out.println("Enter the zipcode you would like to search by:");
+				scan.nextLine();
+				System.out.println("Enter the breed you would like to search by:");
 				String breedToSearchBy = scan.nextLine();
 				List<Dog> dogsBreedSearchResult = dDao.getDogsByBreed(breedToSearchBy);
 				printDogList(dogsBreedSearchResult);
 				state = handleDogsMenuReturn(scan);
 				break;
 			case AGE:
+				scan.nextLine();
 				System.out.println("Please enter the start of the age range to search for:");
 				int startAge = scan.nextInt();
 				System.out.println("Please enter the end of the age range to search for:");
@@ -90,6 +92,7 @@ public class FindDogsMenu implements FindMenuInterface{
 				state = handleDogsMenuReturn(scan);
 				break;
 			case SIZE:
+				scan.nextLine();
 				System.out.println("To search for small dogs, enter 'y'. Enter 'n' for medium and large dogs.");
 				String size = scan.nextLine();
 				List<Dog> dogsSizeSearchResult = dDao.getDogsBySize(size);
@@ -97,6 +100,7 @@ public class FindDogsMenu implements FindMenuInterface{
 				state = handleDogsMenuReturn(scan);
 				break;
 			case ALL:
+				scan.nextLine();
 				List<Dog> dogsSearchResult = dDao.getDogs();
 				printDogList(dogsSearchResult);
 				state = handleDogsMenuReturn(scan);
@@ -114,11 +118,13 @@ public class FindDogsMenu implements FindMenuInterface{
 				break;
 			}
 		}
+		state = State.MENU;
+		running = true;
 	}
 	
 	public State handleDogsMenuReturn(Scanner s) {
 		State dogMenuState;
-		System.out.println("Press '1' to return to parks search. Press '2' to return to main menu.");
+		System.out.println("Press '1' to return to dogs search. Press '2' to return to main menu.");
 		int response = s.nextInt();
 		switch(response) {
 		case 1:
