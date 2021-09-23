@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.revature.daos.OwnerDao;
 
-public class FindOwnersMenu implements FindMenuInterface{
+public class FindOwnersMenu implements MenuInterface{
 	
 	private boolean running = true;
 	private enum State{
@@ -121,7 +121,8 @@ public class FindOwnersMenu implements FindMenuInterface{
 	
 	public State handleOwnersMenuReturn(Scanner s) {
 		State ownerMenuState;
-		System.out.println("Press '1' to return to owners search. Press '2' to return to main menu.");
+		System.out.println("");
+		System.out.println("Press '1' to return to owners search. Press '2' to return to Owners Menu.");
 		int response = s.nextInt();
 		switch(response) {
 		case 1:
@@ -132,7 +133,7 @@ public class FindOwnersMenu implements FindMenuInterface{
 			break;
 		default:
 			ownerMenuState = State.EXIT;
-			System.out.println("Input error. Returning to main menu.");
+			System.out.println("Input error. Returning to Owners Menu.");
 			break;	
 		}
 		return ownerMenuState;

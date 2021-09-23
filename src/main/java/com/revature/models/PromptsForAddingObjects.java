@@ -9,8 +9,7 @@ public class PromptsForAddingObjects {
 	public PromptsForAddingObjects() {
 
 	}
-	public Park getParkToAdd(Scanner scan) {
-		scan.nextLine();
+	public Park getPark(Scanner scan) {
 		Park park = new Park();
 		System.out.println("Please provide the following information to add a valid park:(ALL fields are required)");
 		System.out.println("");
@@ -57,7 +56,7 @@ public class PromptsForAddingObjects {
 		
 	}
 	
-	public Owner getOwnerToAdd(Scanner scan) {
+	public Owner getOwner(Scanner scan) {
 		scan.nextLine();
 		Owner owner = new Owner();
 		System.out.println("Please provide the following information to add yourself as a dog owner:(ALL fields are required)");
@@ -77,7 +76,7 @@ public class PromptsForAddingObjects {
 		return owner;
 		
 	}
-	public Dog getDogToAdd(Scanner scan) {
+	public Dog getDog(Scanner scan) {
 		scan.nextLine();
 		Dog dog = new Dog();
 		System.out.println("Please provide the following information to add your dog:(ALL fields are required)");

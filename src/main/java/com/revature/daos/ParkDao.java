@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +27,27 @@ public class ParkDao implements ParkDaoInterface{
 			rs = s.executeQuery(sql);
 			
 			return parkResultSetToParkList(rs);
+			
+		}catch(SQLException e) {
+			Logger log = LogManager.getLogger(ParkDao.class);
+			log.info("get parks db access failed");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public Park getParkByID(int id) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			ResultSet rs = null;
+			String sql = "SELECT * FROM parks WHERE park_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			
+			List<Park> tempPark = parkResultSetToParkList(rs);
+			return tempPark.get(0);
 			
 		}catch(SQLException e) {
 			Logger log = LogManager.getLogger(ParkDao.class);
@@ -188,6 +210,56 @@ public class ParkDao implements ParkDaoInterface{
 		}
 	}
 	
+	@Override
+	public void updatePark(Park park) {
+		
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			String sql = "UPDATE parks" + 
+						 "SET parkName = ?, streetName = ?, city = ?, zipcode = ?, shady = ?, barkPark = ?, playFields = ?, walkingTrails = ?" +
+						 "WHERE park_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, park.getParkName());
+			ps.setString(2, park.getStreetName());
+			ps.setString(3, park.getCity());
+			ps.setString(4, park.getZipcode());
+			ps.setBoolean(5, park.isShady());
+			ps.setBoolean(6, park.isBarkPark());
+			ps.setBoolean(7, park.isPlayFields());
+			ps.setBoolean(8, park.isWalkingTrails());
+			ps.setInt(9, park.getPark_id());
+			ps.executeUpdate();
+			
+			System.out.println("Park updated to:");
+			System.out.println(park);
+			
+		}catch(SQLException e) {
+			System.out.println("Update park failed. Returning to main menu.");
+			e.printStackTrace();
+		}
+	}
+	
+	public void deletePark(Scanner scan)
+	{
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			System.out.println("Please enter the ID number of the park you would like to delete:");
+			int choice = scan.nextInt();
+			
+			String sql = "DELETE FROM parks WHERE park_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, choice);
+			ps.executeUpdate();
+			
+			System.out.println("Park with ID number " + choice + " deleted.");
+			
+		}catch(SQLException e) {
+			System.out.println("Delete park failed. Returning to parks menu.");
+			e.printStackTrace();
+		}
+	}
 	public List<Park> parkResultSetToParkList(ResultSet rs){
 		List<Park> parkList = new ArrayList<>();
 		try {

@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.revature.daos.DogDao;
 
-public class FindDogsMenu implements FindMenuInterface{
+public class FindDogsMenu implements MenuInterface{
 	private boolean running = true;
 	private enum State{
 		NAME, BREED, AGE, SIZE, ALL, MENU, EXIT
@@ -52,7 +52,7 @@ public class FindDogsMenu implements FindMenuInterface{
 			this.state = State.EXIT;
 			break;
 		default:
-			System.out.println("Input error. Repeating park search choices.");
+			System.out.println("Input error. Repeating dog search choices.");
 			this.state = State.MENU;
 			break;
 		}
@@ -67,7 +67,7 @@ public class FindDogsMenu implements FindMenuInterface{
 			switch(this.state) {
 			case NAME:
 				scan.nextLine();
-				System.out.println("Enter the name of the city you would like to search by:");
+				System.out.println("Enter the name of the dog you would like to search by:");
 				String nameToSearchBy = scan.nextLine();
 				List<Dog> dogsNameSearchResult = dDao.getDogsByName(nameToSearchBy);
 				printDogList(dogsNameSearchResult);
@@ -113,7 +113,7 @@ public class FindDogsMenu implements FindMenuInterface{
 				running = false;
 				break;
 			default:
-				System.out.println("Internal error. Returning to main menu.");
+				System.out.println("Internal error. Returning to Dogs Menu.");
 				running = false;
 				break;
 			}
@@ -124,7 +124,8 @@ public class FindDogsMenu implements FindMenuInterface{
 	
 	public State handleDogsMenuReturn(Scanner s) {
 		State dogMenuState;
-		System.out.println("Press '1' to return to dogs search. Press '2' to return to main menu.");
+		System.out.println("");
+		System.out.println("Press '1' to return to dogs search. Press '2' to return to Dogs Menu.");
 		int response = s.nextInt();
 		switch(response) {
 		case 1:
@@ -135,7 +136,7 @@ public class FindDogsMenu implements FindMenuInterface{
 			break;
 		default:
 			dogMenuState = State.EXIT;
-			System.out.println("Input error. Returning to main menu.");
+			System.out.println("Input error. Returning to Dogs Menu.");
 			break;	
 		}
 		return dogMenuState;

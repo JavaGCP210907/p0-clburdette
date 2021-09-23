@@ -1,18 +1,22 @@
 package com.revature;
 
-import com.revature.models.Menu;
+import java.util.Scanner;
+
+import com.revature.models.MainMenu;
 
 public class App {
 	
-	private Menu menu;
+	private MainMenu menu;
+	public Scanner scan;
 	
 	public App() {
-		menu = new Menu();
+		menu = new MainMenu();
+		scan = new Scanner(System.in);
 	}
 	
 	public void start() {
 		menu.menuIntro();
-		menu.loop();
+		menu.loop(scan);
 	}
 
 }

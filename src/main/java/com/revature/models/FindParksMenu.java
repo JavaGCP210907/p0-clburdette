@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.revature.daos.ParkDao;
 
-public class FindParksMenu implements FindMenuInterface{
+public class FindParksMenu implements MenuInterface{
 
 	private boolean running = true;
 	private enum State{
@@ -17,7 +17,6 @@ public class FindParksMenu implements FindMenuInterface{
 		System.out.println("----------------------------------------------------------------");
 		System.out.println("---------------------- search parks by... ----------------------");
 		System.out.println("----------------------------------------------------------------");
-		System.out.println("");
 		System.out.println("|  (option)                                          (command) |");
 		System.out.println("|==============================================================|");
 		System.out.println("| Name ------------------------------------------------  1  ---|");
@@ -25,7 +24,7 @@ public class FindParksMenu implements FindMenuInterface{
 		System.out.println("| Zipcode ---------------------------------------------  3  ---|");
 		System.out.println("| Amenities -------------------------------------------  4  ---|");
 		System.out.println("| See all parks ---------------------------------------  5  ---|");
-		System.out.println("| Return to main menu ---------------------------------  6  ---|");
+		System.out.println("| Return to Parks Menu --------------------------------  6  ---|");
 		System.out.println("|==============================================================|");
 		System.out.println("");
 	}
@@ -111,7 +110,7 @@ public class FindParksMenu implements FindMenuInterface{
 				running = false;
 				break;
 			default:
-				System.out.println("Internal error. Returning to main menu.");
+				System.out.println("Internal error. Returning to Parks Menu.");
 				running = false;
 				break;
 			}
@@ -129,7 +128,8 @@ public class FindParksMenu implements FindMenuInterface{
 	
 	public State handleParksMenuReturn(Scanner s) {
 		State parkMenuState;
-		System.out.println("Press '1' to return to parks search. Press '2' to return to main menu.");
+		System.out.println("");
+		System.out.println("Press '1' to return to parks search. Press '2' to return to Parks Menu.");
 		int response = s.nextInt();
 		switch(response) {
 		case 1:
@@ -140,7 +140,7 @@ public class FindParksMenu implements FindMenuInterface{
 			break;
 		default:
 			parkMenuState = State.EXIT;
-			System.out.println("Input error. Returning to main menu.");
+			System.out.println("Input error. Returning to Parks Menu.");
 			break;	
 		}
 		s.nextLine();

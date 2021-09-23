@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.revature.models.Dog;
-import com.revature.models.Owner;
 import com.revature.utils.ConnectionUtil;
 
 public class DogDao implements DogDaoInterface{
@@ -164,6 +164,74 @@ public class DogDao implements DogDaoInterface{
 			e.printStackTrace();
 		}
 		return null;	
+	}
+
+	@Override
+	public Dog getDogByID(int id) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			ResultSet rs = null;
+			String sql = "SELECT * FROM dogs WHERE dog_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			
+			List<Dog> tempDog = dogResultSetToDogList(rs);
+			return tempDog.get(0);
+			
+		}catch(SQLException e) {
+			Logger log = LogManager.getLogger(DogDao.class);
+			log.info("get dogs db access failed");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public void updateDog(Dog dog) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			String sql = "UPDATE dogs" + 
+						 "SET name = ?, breed = ?, age = ?, small = ?, owner_fk = ?" +
+						 "WHERE dog_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, dog.getName());
+			ps.setString(2, dog.getBreed());
+			ps.setInt(3, dog.getAge());
+			ps.setBoolean(4, dog.isSmall());
+			ps.setInt(5, dog.getOwner_fk());
+			ps.setInt(6, dog.getDog_id());
+			ps.executeUpdate();
+			
+			System.out.println("Dog updated to:");
+			System.out.println(dog);
+			
+		}catch(SQLException e) {
+			System.out.println("Update dog failed. Returning to main menu.");
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void deleteDog(Scanner scan) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			
+			System.out.println("Please enter the ID number of the dog you would like to delete:");
+			int choice = scan.nextInt();
+			
+			String sql = "DELETE FROM dogs WHERE dog_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, choice);
+			ps.executeUpdate();
+			
+			System.out.println("Dog with ID number " + choice + " deleted.");
+			
+		}catch(SQLException e) {
+			System.out.println("Delete dog failed. Returning to Dogs Menu.");
+			e.printStackTrace();
+		}
 	}
 	
 }
