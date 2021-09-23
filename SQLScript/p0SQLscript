@@ -1,0 +1,77 @@
+--barkpark app for Revature p0 project
+
+CREATE TABLE parks (
+	park_id serial PRIMARY KEY,
+	parkName TEXT,
+	streetName TEXT,
+	city TEXT,
+	zipcode TEXT,
+	shady boolean,
+	barkPark boolean,
+	playFields boolean,
+	walkingTrails boolean
+);
+
+CREATE TABLE owners (
+	owner_id serial PRIMARY KEY,
+	f_name TEXT,
+	l_name TEXT,
+	zipcode TEXT,
+	homepark_fk int NOT NULL,
+	FOREIGN KEY (homepark_fk)
+		REFERENCES parks(park_id)
+);
+
+CREATE TABLE dogs (
+	dog_id serial PRIMARY KEY,
+	name TEXT,
+	breed TEXT,
+	age int,
+	small boolean,
+	owner_fk int NOT NULL,
+	FOREIGN KEY (owner_fk)
+		REFERENCES owners(owner_id)
+		ON DELETE CASCADE
+);
+
+INSERT INTO parks (parkName, streetName, city, zipcode, shady, barkPark, playFields, walkingTrails)
+VALUES	('Community Park', 'Yucaipa Boulevard', 'Yucaipa', '92399', true, false, true, true),
+		('ThunderSky Park', 'Sandhill Drive', 'Riverside', '92508', false, false, true, true),
+		('Riverwalk Bark Park', 'Pierce Street', 'Riverside','92504', false, true, true, false),
+		('Mountain Gate Park', 'Main Street', 'Corona', '92882', true, false, true, true),
+		('Harada Hertiage Park', 'Scholar Way', 'Eastvale', '92880', true, false, true, true),
+		('Centennial Park', 'Jurupa Road', 'Jurupa Valley', '92509', false, false, true, true),
+		('Colton K9 Memorial Dog Park', 'La Cadena Drive', 'Colton', '92324', true, true, false, true),
+		('Ford Park', 'Redlands Boulevard', 'Redlands', '92373', true, true, true, true),
+		('Perris Hill Park', 'Highland Avenue', 'San Bernardino', '92404', true, false, true, true);
+	
+INSERT INTO owners (f_name, l_name, zipcode, homepark_fk)
+VALUES	('Curt', 'Burdette', '92399', 1),
+		('Jules', 'Verne', '92505', 3),
+		('Michael', 'McDonald', '92506', 2),
+		('Ouljide', 'Ige', '92880', 4),
+		('Amanda', 'DeLeon', '92377', 7),
+		('Hermela', 'Aragewi', '92501', 3),
+		('Jaime', 'Hernandez', '92373', 8);
+
+INSERT INTO dogs (name, breed, age, small, owner_fk)
+VALUES 	('Stanley', 'Dachsund', 9, true, 1),
+		('Fritz', 'Schnauzer', 12, false, 2),
+		('Jojo', 'Chihuahua', 13, true, 2),
+		('Bunny', 'Terrier', 6, true, 2),
+		('Herbie', 'Pomeranian', 3, false, 2),
+		('Old Yeller', 'Labrador Retriever', 5, false, 3),
+		('Rin Tin Tin', 'German Shepard', 11, false, 4),
+		('Lassie', 'Collie', 16, false, 5),
+		('Doug', 'Mutt', 1, true, 6),
+		('Fifi', 'Poodle', 4, false, 7);
+	
+SELECT * FROM parks;
+SELECT * FROM owners;
+SELECT * FROM dogs;
+
+DELETE FROM parks WHERE streetName = 'Avenue I';
+
+DROP TABLE dogs;
+DROP TABLE owners;
+DROP TABLE parks;

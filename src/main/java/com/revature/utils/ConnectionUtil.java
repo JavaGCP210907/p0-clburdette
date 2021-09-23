@@ -12,11 +12,11 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 
-	String url = System.getenv("URL");
-	String userName = System.getenv("USERNAME");
-	String password = System.getenv("PASSWORD");
+	String url = System.getenv("url");
+	String userName = System.getenv("userName");
+	String password = System.getenv("password");
 	
 		
-	return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=barkpark", "postgres", "password2remember");
+	return DriverManager.getConnection(url, userName, password);
 	}
 }
