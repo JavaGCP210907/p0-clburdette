@@ -203,6 +203,8 @@ public class ParkDao implements ParkDaoInterface{
 			System.out.println("New park:");
 			System.out.println(park);
 			System.out.println("added to Parks database");
+			Logger log = LogManager.getLogger(ParkDao.class);
+			log.debug("Park inserted into table");
 			
 		}catch(SQLException e) {
 			System.out.println("Add park failed. Returning to main menu.");
@@ -216,8 +218,8 @@ public class ParkDao implements ParkDaoInterface{
 		try(Connection conn = ConnectionUtil.getConnection()){
 			
 			String sql = "UPDATE parks" + 
-						 "SET parkName = ?, streetName = ?, city = ?, zipcode = ?, shady = ?, barkPark = ?, playFields = ?, walkingTrails = ?" +
-						 "WHERE park_id = ?";
+						 " SET parkName = ?, streetName = ?, city = ?, zipcode = ?, shady = ?, barkPark = ?, playFields = ?, walkingTrails = ?" +
+						 " WHERE park_id = ?";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, park.getParkName());
@@ -233,6 +235,8 @@ public class ParkDao implements ParkDaoInterface{
 			
 			System.out.println("Park updated to:");
 			System.out.println(park);
+			Logger log = LogManager.getLogger(ParkDao.class);
+			log.debug("Park updated in table");
 			
 		}catch(SQLException e) {
 			System.out.println("Update park failed. Returning to main menu.");
@@ -254,6 +258,8 @@ public class ParkDao implements ParkDaoInterface{
 			ps.executeUpdate();
 			
 			System.out.println("Park with ID number " + choice + " deleted.");
+			Logger log = LogManager.getLogger(ParkDao.class);
+			log.debug("Park deleted from table");
 			
 		}catch(SQLException e) {
 			System.out.println("Delete park failed. Returning to parks menu.");

@@ -57,7 +57,6 @@ public class PromptsForAddingObjects {
 	}
 	
 	public Owner getOwner(Scanner scan) {
-		scan.nextLine();
 		Owner owner = new Owner();
 		System.out.println("Please provide the following information to add yourself as a dog owner:(ALL fields are required)");
 		System.out.println("");
@@ -77,7 +76,6 @@ public class PromptsForAddingObjects {
 		
 	}
 	public Dog getDog(Scanner scan) {
-		scan.nextLine();
 		Dog dog = new Dog();
 		System.out.println("Please provide the following information to add your dog:(ALL fields are required)");
 		System.out.println("");

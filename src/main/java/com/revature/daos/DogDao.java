@@ -102,7 +102,7 @@ public class DogDao implements DogDaoInterface{
 				small = true;
 			}
 			ResultSet rs = null;
-			String sql = "SELECT * FROM dogs WHERE size = ?";
+			String sql = "SELECT * FROM dogs WHERE small = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setBoolean(1, small);
 			rs = ps.executeQuery();
@@ -134,7 +134,9 @@ public class DogDao implements DogDaoInterface{
 			
 			System.out.println("New dog:");
 			System.out.println(dog);
-			System.out.println("added to Dogss database");
+			System.out.println("added to Dogs database");
+			Logger log = LogManager.getLogger(DogDao.class);
+			log.debug("Dog inserted into table");
 			
 		}catch(SQLException e) {
 			System.out.println("Add dog failed. Returning to main menu.");
@@ -192,8 +194,8 @@ public class DogDao implements DogDaoInterface{
 		try(Connection conn = ConnectionUtil.getConnection()){
 			
 			String sql = "UPDATE dogs" + 
-						 "SET name = ?, breed = ?, age = ?, small = ?, owner_fk = ?" +
-						 "WHERE dog_id = ?";
+						 " SET name = ?, breed = ?, age = ?, small = ?, owner_fk = ?" +
+						 " WHERE dog_id = ?";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, dog.getName());
@@ -206,6 +208,8 @@ public class DogDao implements DogDaoInterface{
 			
 			System.out.println("Dog updated to:");
 			System.out.println(dog);
+			Logger log = LogManager.getLogger(DogDao.class);
+			log.debug("Dog updated in table");
 			
 		}catch(SQLException e) {
 			System.out.println("Update dog failed. Returning to main menu.");
@@ -227,6 +231,8 @@ public class DogDao implements DogDaoInterface{
 			ps.executeUpdate();
 			
 			System.out.println("Dog with ID number " + choice + " deleted.");
+			Logger log = LogManager.getLogger(DogDao.class);
+			log.debug("Dog deleted from table");
 			
 		}catch(SQLException e) {
 			System.out.println("Delete dog failed. Returning to Dogs Menu.");

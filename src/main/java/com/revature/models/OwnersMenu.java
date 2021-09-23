@@ -2,6 +2,9 @@ package com.revature.models;
 
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.daos.OwnerDao;
 
 public class OwnersMenu implements MenuInterface{
@@ -95,6 +98,8 @@ public class OwnersMenu implements MenuInterface{
 			default:
 				System.out.println("Internal error. Returning to main menu.");
 				running = false;
+				Logger log = LogManager.getLogger(OwnersMenu.class);
+				log.debug("owners menu switch in default");
 				break;
 			}
 		}
@@ -110,6 +115,7 @@ public class OwnersMenu implements MenuInterface{
 		System.out.println(o);
 		s.nextLine();
 		Owner owner = new Owner();
+		owner.setOwner_id(choice);
 		System.out.println("Please provide the following information to update this owner: (ALL fields are required)");
 		System.out.println("");
 		System.out.println("Owner first name:");

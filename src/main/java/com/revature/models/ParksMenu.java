@@ -2,6 +2,9 @@ package com.revature.models;
 
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.daos.ParkDao;
 
 public class ParksMenu implements MenuInterface{
@@ -75,13 +78,9 @@ public class ParksMenu implements MenuInterface{
 				state = State.MENU;
 				break;
 			case ADD:
-				System.out.println("start of add");
 				scan.nextLine();
-				System.out.println("after scan");
 				PromptsForAddingObjects addPromptsTo = new PromptsForAddingObjects();
-				System.out.println("create prompts");
 				Park parkToAdd = addPromptsTo.getPark(scan);
-				System.out.println("after 2nd scan into park object");
 				pDao.addPark(parkToAdd);
 				state = State.MENU;
 				break;
@@ -100,6 +99,8 @@ public class ParksMenu implements MenuInterface{
 			default:
 				System.out.println("Internal error. Returning to main menu.");
 				running = false;
+				Logger log = LogManager.getLogger(ParksMenu.class);
+				log.debug("parks menu switch in default");
 				break;
 			}
 		}
@@ -115,6 +116,7 @@ public class ParksMenu implements MenuInterface{
 		System.out.println(p);
 		s.nextLine();
 		Park park = new Park();
+		park.setPark_id(choice);
 		System.out.println("Please provide the following information to update this park: (ALL fields are required)");
 		System.out.println("");
 		System.out.println("Park name:");

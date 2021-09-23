@@ -1,0 +1,56 @@
+2021-09-22 22:38:21 DEBUG MainMenu:109 - exiting program
+2021-09-22 22:39:23 DEBUG MainMenu:109 - exiting program
+2021-09-22 22:39:23 INFO  MainMenu:110 - test
+2021-09-23 00:00:57 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:06:50 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:13:02 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:15:04 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:15:28 DEBUG OwnerDao:132 - Owner added to table
+2021-09-23 00:16:07 DEBUG OwnerDao:226 - Owner deleted from table
+2021-09-23 00:16:30 DEBUG OwnerDao:132 - Owner added to table
+2021-09-23 00:16:51 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 00:17:30 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 00:22:14 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:22:46 DEBUG ParkDao:239 - Park updated in table
+2021-09-23 00:23:46 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:25:44 DEBUG ParkDao:239 - Park updated in table
+2021-09-23 00:27:29 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:27:58 DEBUG ParkDao:207 - Park inserted into table
+2021-09-23 00:28:42 DEBUG ParkDao:262 - Park deleted from table
+2021-09-23 00:30:06 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 00:31:29 DEBUG OwnerDao:132 - Owner added to table
+2021-09-23 00:31:59 DEBUG OwnerDao:226 - Owner deleted from table
+2021-09-23 00:34:32 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:37:27 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:38:06 DEBUG DogDao:212 - Dog updated in table
+2021-09-23 00:38:59 DEBUG DogDao:212 - Dog updated in table
+2021-09-23 00:40:07 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 00:43:09 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:46:57 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:47:20 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 00:49:06 DEBUG ParkDao:239 - Park updated in table
+2021-09-23 00:50:01 DEBUG ParkDao:239 - Park updated in table
+2021-09-23 00:50:28 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:52:15 DEBUG DogDao:139 - Dog inserted into table
+2021-09-23 00:53:32 DEBUG DogDao:235 - Dog deleted from table
+2021-09-23 00:53:47 DEBUG Launcher:13 - successfully exited program
+2021-09-23 00:55:45 INFO  MainMenu:35 - application successfully started
+2021-09-23 00:58:28 DEBUG ParkDao:239 - Park updated in table
+2021-09-23 00:59:24 INFO  MainMenu:35 - application successfully started
+2021-09-23 01:00:13 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 01:00:48 DEBUG OwnerDao:132 - Owner added to table
+2021-09-23 01:01:26 DEBUG DogDao:139 - Dog inserted into table
+2021-09-23 01:01:53 DEBUG OwnerDao:226 - Owner deleted from table
+2021-09-23 01:02:24 DEBUG Launcher:13 - successfully exited program
+2021-09-23 01:12:07 INFO  MainMenu:35 - application successfully started
+2021-09-23 01:13:58 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 01:14:26 DEBUG OwnerDao:132 - Owner added to table
+2021-09-23 01:15:08 DEBUG DogDao:139 - Dog inserted into table
+2021-09-23 01:15:38 DEBUG OwnerDao:226 - Owner deleted from table
+2021-09-23 01:15:58 DEBUG Launcher:13 - successfully exited program
+2021-09-23 01:27:26 INFO  MainMenu:35 - application successfully started
+2021-09-23 01:29:03 DEBUG OwnerDao:202 - Owner updated in table
+2021-09-23 01:29:33 DEBUG OwnerDao:132 - Owner added to table
+2021-09-23 01:30:05 DEBUG DogDao:139 - Dog inserted into table
+2021-09-23 01:30:38 DEBUG OwnerDao:226 - Owner deleted from table
+2021-09-23 01:31:03 DEBUG Launcher:13 - successfully exited program

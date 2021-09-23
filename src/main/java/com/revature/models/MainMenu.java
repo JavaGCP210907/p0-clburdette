@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MainMenu implements MenuInterface{
 	
-	private Logger log;
+
 	private ParksMenu ParksMenu;
 	private OwnersMenu OwnersMenu;
 	private DogsMenu DogsMenu;
@@ -18,12 +18,11 @@ public class MainMenu implements MenuInterface{
 	private State state;
 	
 	public MainMenu() {
-		this.log = LogManager.getLogger(MainMenu.class);
+
 		this.ParksMenu = new ParksMenu();
 		this.OwnersMenu = new OwnersMenu();
 		this.DogsMenu = new DogsMenu();
 		this.state = State.MAIN;
-		log.info("main menu initiated");
 	}
 
 	public void menuIntro() {
@@ -32,6 +31,8 @@ public class MainMenu implements MenuInterface{
 		System.out.println("=-------------- a hub for the best dog parks ------------------=");
 		System.out.println("================================================================");
 		System.out.println("");
+		Logger log = LogManager.getLogger(MainMenu.class);
+		log.info("application successfully started");
 	}
 	public void loop(Scanner scan) {
 		
@@ -61,6 +62,8 @@ public class MainMenu implements MenuInterface{
 			default:
 				System.out.println("There has been an input error.  Returning the main menu");
 				this.state = State.MAIN;
+				Logger log = LogManager.getLogger(MainMenu.class);
+				log.debug("main menu switch in default");
 				break;	
 			}
 		}
@@ -106,7 +109,7 @@ public class MainMenu implements MenuInterface{
 		System.out.println("=---------------- thanks for using BarkPark -------------------=");
 		System.out.println("=------------------ come back again soon ----------------------=");
 		System.out.println("================================================================");
-		log.info("main menu successfully closed");
+		Logger log = LogManager.getLogger(MainMenu.class);
 	}
 
 

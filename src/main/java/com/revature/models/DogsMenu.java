@@ -2,6 +2,9 @@ package com.revature.models;
 
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.daos.DogDao;
 
 
@@ -95,6 +98,8 @@ public class DogsMenu implements MenuInterface{
 			default:
 				System.out.println("Internal error. Returning to main menu.");
 				running = false;
+				Logger log = LogManager.getLogger(DogsMenu.class);
+				log.debug("dogs menu switch in default");
 				break;
 			}
 		}
@@ -110,6 +115,7 @@ public class DogsMenu implements MenuInterface{
 		System.out.println(d);
 		s.nextLine();
 		Dog dog = new Dog();
+		dog.setDog_id(choice);
 		System.out.println("Please provide the following information to update this dog: (ALL fields are required)");
 		System.out.println("");
 		System.out.println("Dog name:");
@@ -122,6 +128,7 @@ public class DogsMenu implements MenuInterface{
 		dog.setAge(s.nextInt());
 		System.out.println("");
 		System.out.println("Is this a small dog (y/n):");
+		s.nextLine();
 		char test = s.nextLine().charAt(0);
 		boolean small = false;
 		if(test == 'y'){small = true;}

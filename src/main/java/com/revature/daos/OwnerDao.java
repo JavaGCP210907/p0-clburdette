@@ -128,6 +128,8 @@ public class OwnerDao implements OwnerDaoInterface{
 			System.out.println("New owner:");
 			System.out.println(owner);
 			System.out.println("added to Owners database");
+			Logger log = LogManager.getLogger(OwnerDao.class);
+			log.debug("Owner added to table");
 			
 		}catch(SQLException e) {
 			System.out.println("Add owner failed. Returning to main menu.");
@@ -183,8 +185,8 @@ public class OwnerDao implements OwnerDaoInterface{
 		try(Connection conn = ConnectionUtil.getConnection()){
 			
 			String sql = "UPDATE owners" + 
-						 "SET f_name = ?, l_name = ?, zipcode = ?, homepark_fk = ?" +
-						 "WHERE owner_id = ?";
+						 " SET f_name = ?, l_name = ?, zipcode = ?, homepark_fk = ?" +
+						 " WHERE owner_id = ?";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, owner.getF_name());
@@ -196,6 +198,8 @@ public class OwnerDao implements OwnerDaoInterface{
 			
 			System.out.println("Owner updated to:");
 			System.out.println(owner);
+			Logger log = LogManager.getLogger(OwnerDao.class);
+			log.debug("Owner updated in table");
 			
 		}catch(SQLException e) {
 			System.out.println("Update owner failed. Returning to main menu.");
@@ -218,6 +222,8 @@ public class OwnerDao implements OwnerDaoInterface{
 			ps.executeUpdate();
 			
 			System.out.println("Owner with ID number " + choice + " deleted.");
+			Logger log = LogManager.getLogger(OwnerDao.class);
+			log.debug("Owner deleted from table");
 			
 		}catch(SQLException e) {
 			System.out.println("Delete owner failed. Returning to Owners menu.");
